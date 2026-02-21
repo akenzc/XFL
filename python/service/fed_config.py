@@ -58,6 +58,11 @@ class FedConfig(object):
     @property
     def redis_port(cls):
         return FedNode.redis_port
+        
+    @classmethod
+    def get_env(cls, key: str, default=None):
+        import os
+        return os.environ.get(key, default)
 
     @classmethod
     def get_label_trainer(cls):
