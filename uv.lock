@@ -2731,6 +2731,18 @@ wheels = [
 ]
 
 [[package]]
+name = "tf-keras"
+version = "2.19.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tensorflow" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a9/71/a6e82b8e8ce04a8ab1ff0560791698b70d1b2dda1a0270f1d69a834e8880/tf_keras-2.19.0.tar.gz", hash = "sha256:b09a407d87a4571ce1e8ca985cfc68483e3d63b2518a5d79a97ad92cb64dbe9c", size = 1261172, upload-time = "2025-03-03T21:24:13.582Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/45/6b/d245122d108a94df5969ee7408ad343af1627730e91478e01ef098976bfa/tf_keras-2.19.0-py3-none-any.whl", hash = "sha256:4f339e800987b39d1548a8c76a7b33b6801a97ec7fcd89c299ec29741f7890bd", size = 1726787, upload-time = "2025-03-03T21:24:11.826Z" },
+]
+
+[[package]]
 name = "threadpoolctl"
 version = "3.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3077,6 +3089,7 @@ dependencies = [
     { name = "sentencepiece" },
     { name = "tenseal" },
     { name = "tensorflow" },
+    { name = "tf-keras" },
     { name = "torch" },
     { name = "torchaudio" },
     { name = "torchvision" },
@@ -3127,6 +3140,7 @@ requires-dist = [
     { name = "sentencepiece" },
     { name = "tenseal" },
     { name = "tensorflow", specifier = ">=2.13.0" },
+    { name = "tf-keras" },
     { name = "torch", specifier = ">=2.6.0" },
     { name = "torchaudio", specifier = ">=0.13.1" },
     { name = "torchvision", specifier = ">=0.14.1" },
