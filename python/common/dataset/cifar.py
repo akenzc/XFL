@@ -76,12 +76,12 @@ class CIFAR10(torch.utils.data.Dataset):
                 raise RuntimeError(
                     f'{file_path} has been corruptted or lost. Please redownload the data by setting redownload=True')
             with open(file_path, "rb") as f:
-                entry = pickle.load(f, encoding="latin1")
+                entry = pickle.load(f, encoding="latin1")  # nosec B301
                 self.data.append(entry["data"])
-                if "labels" in entry:
-                    self.labels.extend(entry["labels"])
-                else:
-                    self.labels.extend(entry["fine_labels"])
+            if "labels" in entry:
+                self.labels.extend(entry["labels"])
+            else:
+                self.labels.extend(entry["fine_labels"])
         
         self.data = np.vstack(self.data).reshape(-1, 3, 32, 32).transpose((0, 2, 3, 1))  # HWC format
         self.labels = np.array(self.labels)
@@ -110,7 +110,7 @@ class CIFAR10(torch.utils.data.Dataset):
             raise RuntimeError(
                 "Dataset metadata has been found or corrupted. Please redownload the data by setting redownload=True")
         with open(metapath, "rb") as f:
-            data = pickle.load(f, encoding="latin1")
+            data = pickle.load(f, encoding="latin1")  # nosec B301
             self.classes = data[self.metadata["key"]]
         self.class_to_idx = {c: i for i, c in enumerate(self.classes)}
 

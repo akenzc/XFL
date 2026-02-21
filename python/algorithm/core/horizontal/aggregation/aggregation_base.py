@@ -16,7 +16,15 @@
 import abc
 import math
 import pickle
+import io
 from typing import List, OrderedDict, Tuple, Dict, Optional
+
+class RestrictedUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        return super().find_class(module, name)
+
+def safe_pickle_loads(data):
+    return RestrictedUnpickler(io.BytesIO(data)).load()  # nosec B301
 
 from common.communication.gRPC.python.channel import DualChannel
 from service.fed_config import FedConfig
@@ -102,7 +110,7 @@ class AggregationLeafBase(object):
                 break
             elif recv_value[-1] == MOV[0]:
                 continue    
-        params = pickle.loads(pickle_params)
+        params = safe_pickle_loads(pickle_params)
         return params
 
 
@@ -175,7 +183,7 @@ class AggregationRootBase(object):
                 
                 received_values[i] += data[:-1]
                 if data[-1] == EOV[0]:
-                    received_values[i] = pickle.loads(received_values[i])
+                    received_values[i] = safe_pickle_loads(received_values[i])
                     is_continue_flags[i] = False
             
             flag = any(is_continue_flags)

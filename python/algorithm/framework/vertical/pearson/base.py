@@ -121,6 +121,7 @@ class VerticalPearsonBase(TrainConfigParser):
 	@staticmethod
 	def string_encryption(str_list: List[str]):
 		ret = {}
+		import secrets
 		for s in str_list:
-			ret[s] = ''.join(random.sample(string.ascii_letters + string.digits, 16))
+			ret[s] = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(16))
 		return ret

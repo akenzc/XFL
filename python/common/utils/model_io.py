@@ -70,9 +70,9 @@ class ModelIO:
     @staticmethod
     def load_torch_model(model_path: str, device: str = "cpu"):
         if device == "cpu":
-                model_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
+                model_dict = torch.load(model_path, map_location=lambda storage, loc: storage, weights_only=True)
         elif "cuda" in device:
-                model_dict = torch.load(model_path, map_location=lambda storage, loc: storage.cuda(0))
+                model_dict = torch.load(model_path, map_location=lambda storage, loc: storage.cuda(0), weights_only=True)
         else:
             raise ValueError(f"Device {device} not support.")
         logger.info("Pretrain model loaded from: {}".format(model_path))

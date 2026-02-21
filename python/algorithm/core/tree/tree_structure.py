@@ -196,8 +196,9 @@ class Tree(object):
                 
     def _generate_id(self) -> str:
         flag = True
+        import secrets
         while flag:
-            id = ''.join(random.sample(string.ascii_letters + string.digits, 16))
+            id = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(16))
             if id not in self.nodes:
                 flag = False
         return '_'.join([str(self.tree_index), id])

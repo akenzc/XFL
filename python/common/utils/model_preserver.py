@@ -52,4 +52,4 @@ class ModelPreserver(object):
 
     @staticmethod
     def load(model_path: str):
-        return torch.load(model_path)
+        return torch.load(model_path, weights_only=True)

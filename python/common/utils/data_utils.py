@@ -27,7 +27,7 @@ from sklearn.utils import shuffle as sk_shuffle
 
 
 def cal_md5(fpath: str, chunk_size: int = 1024 * 1024) -> str:
-    md5 = hashlib.md5()
+    md5 = hashlib.md5(usedforsecurity=False)
     with open(fpath, "rb") as f:
         for chunk in iter(lambda: f.read(chunk_size), b''):
             md5.update(chunk)
@@ -49,7 +49,7 @@ def download_url(url: str, fpath: str, md5: str, chunk_size: int = 1024 * 32) ->
         return
     print("Dataset downloading...")
         
-    with request.urlopen(request.Request(url), context=ssl._create_unverified_context()) as response:
+    with request.urlopen(request.Request(url), context=ssl.create_default_context()) as response:
         with open(fpath, "wb") as fh:
             for chunk in iter(lambda: response.read(chunk_size), b""):
                 if not chunk:
@@ -62,6 +62,10 @@ def extract_file_recursively(from_path: str, to_path: str) -> None:
     def extract(from_path, to_path, suffix):
         if suffix == ".tar":
             with tarfile.open(from_path,  "r") as tar:
+                for member in tar.getmembers():
+                    member_path = os.path.abspath(os.path.join(to_path, member.name))
+                    if not member_path.startswith(os.path.abspath(to_path)):
+                        raise Exception("Attempted Path Traversal in Tar File")
                 tar.extractall(to_path)
         elif suffix == ".gz":
             with gzip.open(from_path, "rb") as rfh, open(to_path, "wb") as wfh:

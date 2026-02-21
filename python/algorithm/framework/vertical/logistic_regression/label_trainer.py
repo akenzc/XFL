@@ -46,9 +46,10 @@ class VerticalLogisticRegressionLabelTrainer(VerticalLogisticRegressionBase):
         self._sync_config(train_conf)
         super().__init__(train_conf, label=True, *args, **kwargs)
         if self.random_seed is None:
-            self.random_seed = random.randint(-(1 << 32), 1 << 32)
+            import secrets
+            self.random_seed = secrets.randbits(32) - (1 << 31)
             self.sync_channel.broadcast(self.random_seed)
-            if BLOCKCHAIN:
+        if BLOCKCHAIN:
                 logger.debug(
                     f"Broadcast random seed, SHA256: {hashlib.sha256(pickle.dumps(self.random_seed)).hexdigest()}")
         self.set_seed(self.random_seed)
@@ -316,9 +317,8 @@ class VerticalLogisticRegressionLabelTrainer(VerticalLogisticRegressionBase):
                 # loss_file = self.train_conf['output']['plot_loss']['name']
                 logger.info(f"Writing loss for epoch {epoch}")
                 self._write_loss(train_loss, val_loss, epoch)
-            except Exception:
-                pass
-
+            except Exception as e:
+                logger.warning(e)
             if self.early_stopping_config["patience"] > 0:
                 early_stop_flag, save_flag = self.es(metric)
             else:

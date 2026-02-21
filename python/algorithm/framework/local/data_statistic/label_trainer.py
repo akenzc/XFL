@@ -145,8 +145,9 @@ class LocalDataStatisticLabelTrainer:
         self.label_overview()
 
         def feat_handle(feat):
+            import ast
             if self.missing_flag[feat]:
-                data = pd.DataFrame(self.data[feat].dropna().apply(lambda x: eval(x)))
+                data = pd.DataFrame(self.data[feat].dropna().apply(lambda x: ast.literal_eval(x)))
             else:
                 data = self.data[[feat]]
             return data

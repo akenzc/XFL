@@ -142,7 +142,8 @@ class VerticalLogisticRegressionTrainer(VerticalLogisticRegressionBase):
                     noise /= 100000
                     x_batch_numpy = x_batch.numpy()
                     # avoid bug in seal ckks when a column is all zero
-                    sign = 1 if random.randint(0, 1) == 1 else -1
+                    import secrets
+                    sign = 1 if secrets.randbelow(2) == 1 else -1
                     x_batch_numpy[np.where(np.sum(x_batch_numpy, axis=0) == 0)] = 1e-7 * sign
                     ciphertext = pred_residual.matmul(x_batch_numpy)
                     noised_gradient_trainer_linear = ciphertext + noise
